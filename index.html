@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file, if you have one -->
+</head>
+<body>
+    <div class="container">
+        <h1>Library Management System</h1>
+        <form id="library-form">
+            <label for="title">Book Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required>
+
+            <button type="button" onclick="addBook()">Add Book</button>
+            <button type="button" onclick="removeBook()">Remove Book</button>
+            <button type="button" onclick="searchBook()">Search Book</button>
+            <button type="button" onclick="listAllBooks()">List All Books</button>
+        </form>
+        <div id="result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        let books = {};
+
+        function addBook() {
+            const title = document.getElementById('title').value.trim();
+            const author = document.getElementById('author').value.trim();
+
+            if (books[title]) {
+                showMessage("Book already exists.");
+            } else {
+                books[title] = author;
+                showMessage("Book added successfully.");
+            }
+
+            clearInputs();
+        }
+
+        function removeBook() {
+            const title = document.getElementById('title').value.trim();
+
+            if (books[title]) {
+                delete books[title];
+                showMessage("Book removed successfully.");
+            } else {
+                showMessage("Book not found.");
+            }
+
+            clearInputs();
+        }
+
+        function searchBook() {
+            const title = document.getElementById('title').value.trim();
+
+            if (books[title]) {
+                showMessage(`Book found: ${title} by ${books[title]}`);
+            } else {
+                showMessage("Book not found.");
+            }
+
+            clearInputs();
+        }
+
+        function listAllBooks() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ""; // Clear previous results
+
+            if (Object.keys(books).length === 0) {
+                showMessage("No books in the library.");
+            } else {
+                let list = "<h2>List of all books:</h2><ul>";
+                for (const title in books) {
+                    list += `<li>Title: ${title}, Author: ${books[title]}</li>`;
+                }
+                list += "</ul>";
+                resultDiv.innerHTML = list;
+            }
+        }
+
+        function showMessage(message) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p>${message}</p>`;
+        }
+
+        function clearInputs() {
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+        }
+    </script>
+</body>
+</html>
